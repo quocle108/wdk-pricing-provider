@@ -70,6 +70,15 @@ Methods:
 
 You implement this interface for your data source (e.g., Bitfinex, Coinbase, etc.). At a minimum, provide methods that `PricingProvider` uses to fetch spot and historical prices.
 
+Contract every implementation must honor:
+
+- `from` and `to` are common ticker symbols (`BTC`, `USDT`, `USD`), matched
+  case-insensitively. Translate them to your vendor's own codes or IDs inside
+  the client; callers must not need to know vendor vocabulary.
+- A pair the vendor cannot resolve is `null` in the returned position. Do not
+  throw, so one unknown symbol cannot fail a whole batch.
+- Batch results keep the input order.
+
 ## 🔍 Usage Examples
 
 For detailed usage examples, please check the included test files `index.test.js` and `index.integration.test.js` in this repository.

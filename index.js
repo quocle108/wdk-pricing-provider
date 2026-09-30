@@ -37,8 +37,8 @@ import FailoverProvider from '@tetherto/wdk-failover-provider'
 
 /**
  * @typedef {Object} PricePair
- * @property {string} from - Source asset symbol
- * @property {string} to - Target asset symbol
+ * @property {string} from - Source asset common ticker symbol (e.g. 'USDT')
+ * @property {string} to - Target asset common ticker symbol (e.g. 'USD')
  */
 
 /**
@@ -55,6 +55,13 @@ import FailoverProvider from '@tetherto/wdk-failover-provider'
  * @property {number} [priceCacheDurationMs=3600000] - Cache duration in milliseconds, defaults to 1 hour
  */
 
+/**
+ * Abstract price source. `from` and `to` on every method are common ticker
+ * symbols (e.g. 'BTC', 'USDT', 'USD'), matched case-insensitively. An
+ * implementation translates them to its vendor's vocabulary internally, so
+ * callers can swap clients without changing the symbols they pass. A pair the
+ * vendor cannot resolve yields `null` in its position, never a thrown error.
+ */
 export class PricingClient {
   /**
    * Returns the current price of an asset pair, or `null` if the pair cannot be resolved
