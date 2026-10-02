@@ -72,9 +72,12 @@ You implement this interface for your data source (e.g., Bitfinex, Coinbase, etc
 
 Contract every implementation must honor:
 
-- `from` and `to` are common ticker symbols (`BTC`, `USDT`, `USD`), matched
-  case-insensitively. Translate them to your vendor's own codes or IDs inside
-  the client; callers must not need to know vendor vocabulary.
+- `from` and `to` are common ticker symbols (`BTC`, `USDT`, `USD`). Match them
+  case-insensitively — the provider passes them through unchanged — and
+  translate them to your vendor's own codes or IDs inside the client; callers
+  must not need to know vendor vocabulary. Bitfinex, for instance, publishes
+  tether as `UST`, so its client maps `USDT` to `UST` internally and callers
+  keep passing `USDT`.
 - A pair the vendor cannot resolve is `null` in the returned position. Do not
   throw, so one unknown symbol cannot fail a whole batch.
 - Batch results keep the input order.
